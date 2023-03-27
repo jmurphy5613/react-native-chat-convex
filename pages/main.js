@@ -1,19 +1,43 @@
-import { useQuery } from "../convex/_generated/react";
 import { StyleSheet, Text, View, TextInput, Button} from 'react-native';
 import { useState } from "react";
+import { useMutation, useQuery } from "../convex/_generated/react";
+import addMessage from '../convex/addMessage';
 
 function Main(props) {
 
-    const tasks = useQuery("getTasks");
-
     const [currentMessage, setCurrentMessage] = useState("");
+
+    const messages = useQuery("getMessages") || [];
+    const addMessage = useMutation('addMessage');
+
+
+    const onMessageSend = () => {
+        if(currentMessage !== "") {
+            addMessage({ body: currentMessage, author: props.name })
+            setCurrentMessage("");
+            
+        }
+    }
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{`Writing as ${props.name}`}</Text>
+            <View>
+                {
+                    messages.map((message, index) => {
+                        return (
+                            <View key={index}>
+                                <Text>{message.author}</Text>
+                                <Text>{message.body}</Text>
+                            </View>
+                        )
+                    }, [])
+                }
+            </View>
+
             <View style={styles.messageContainer}>
                 <TextInput style={styles.input} placeholder={"Write your message here"} onChangeText={setCurrentMessage} />
-                <Button style={styles.send} title="Send" />
+                <Button onPress={onMessageSend} style={styles.send} title="Send" />
             </View>
 
         </View>

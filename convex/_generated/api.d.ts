@@ -11,7 +11,8 @@
 
 import type { ApiFromModules } from "convex/api";
 import type * as addMessage from "../addMessage";
-import type * as getTasks from "../getTasks";
+import type * as getMessages from "../getMessages";
+import type * as shema from "../shema";
 
 /**
  * A type describing your app's public Convex API.
@@ -24,5 +25,6 @@ import type * as getTasks from "../getTasks";
  */
 export type API = ApiFromModules<{
   addMessage: typeof addMessage;
-  getTasks: typeof getTasks;
+  getMessages: typeof getMessages;
+  shema: typeof shema;
 }>;
